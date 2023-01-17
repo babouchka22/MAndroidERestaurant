@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AndroidERestaurant</string>
+
+    <string-array name="dish_titles">
+        <item>Entrée 1</item>
+        <item>Entrée 2</item>
+        <item>Plat 1</item>
+        <item>Plat 2</item>
+        <item>Dessert 1</item>
+        <item>Dessert 2</item>
+    </string-array>
+
+</resources>
