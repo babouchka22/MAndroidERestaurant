@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 class DishAdapter(private val dishes: List<String>) : RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DishAdapter.DishViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.dish_item, parent, false)
         return DishAdapter.DishViewHolder(view)
@@ -16,7 +17,7 @@ class DishAdapter(private val dishes: List<String>) : RecyclerView.Adapter<DishA
 
 
     override fun onBindViewHolder(holder: DishAdapter.DishViewHolder, position: Int) {
-       // val dish: Dish = listdishes[position]
+       // val dishes: Dishes = dishes[position]
        // val textView = viewHolder.nameTextView
        // textView.text = dish.name
         holder.bind(dishes[position])
@@ -32,4 +33,5 @@ class DishAdapter(private val dishes: List<String>) : RecyclerView.Adapter<DishA
             dishTitle.text = dish
         }
     }
+
 }
