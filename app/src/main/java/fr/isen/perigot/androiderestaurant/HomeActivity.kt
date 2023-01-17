@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import fr.isen.perigot.androiderestaurant.databinding.ActivityHomeBinding
 
@@ -21,7 +20,7 @@ class HomeActivity : AppCompatActivity() {
         binding.entrees.setOnClickListener {
             Toast.makeText(this,"Click Entree", Toast.LENGTH_SHORT).show();
 
-            val intent = Intent(this@HomeActivity, DetailCategorie::class.java)
+            val intent = Intent(this@HomeActivity, CategoryActivity::class.java)
             intent.putExtra("categoryName", "Entrees")
             startActivity(intent);
         }
@@ -29,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
         binding.plats.setOnClickListener {
             Toast.makeText(this,"Click Plat", Toast.LENGTH_SHORT).show();
 
-            val intent = Intent(this@HomeActivity, DetailCategorie::class.java)
+            val intent = Intent(this@HomeActivity, CategoryActivity::class.java)
             intent.putExtra("categoryName", "Plats")
             startActivity(intent);
         }
@@ -37,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         binding.desserts.setOnClickListener {
             Toast.makeText(this, "Click Dessert", Toast.LENGTH_SHORT).show();
 
-            val intent = Intent(this@HomeActivity, DetailCategorie::class.java)
+            val intent = Intent(this@HomeActivity, CategoryActivity::class.java)
             intent.putExtra("categoryName", "Desserts")
             startActivity(intent);
         }
