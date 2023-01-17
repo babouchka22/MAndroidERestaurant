@@ -7,7 +7,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class DishAdapter(private val dishes: List<String>, val onItemClickListener: () -> Unit) :
+class DishAdapter(private val dishes: List<String>, val onItemClickListener: (String) -> Unit) :
     RecyclerView.Adapter<DishAdapter.DishViewHolder>() {
 
 
@@ -25,7 +25,7 @@ class DishAdapter(private val dishes: List<String>, val onItemClickListener: () 
 
         holder.dishTitle.text = dishes[position]
         holder.itemView.setOnClickListener {
-            onItemClickListener()
+            onItemClickListener(dishes[position])
         }
     }
 
