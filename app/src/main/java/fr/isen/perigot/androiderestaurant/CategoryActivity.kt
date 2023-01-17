@@ -3,6 +3,7 @@ package fr.isen.perigot.androiderestaurant
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,40 +68,23 @@ class CategoryActivity : AppCompatActivity() {
         }
 
 
-        val queue = Volley.newRequestQueue(this)
+        loadDishesFromAPI()
+
+    }
+
+    private fun loadDishesFromAPI(){
+        //val queue = Volley.newRequestQueue(this)
         val url = "http://test.api.catering.bluecodegames.com/menu"
         val jsonObject = JSONObject()
         jsonObject.put("id_shop", "1")
         val jsonRequest = JsonObjectRequest(
-            Request.Method.POST, url, jsonObject,
-            Response.Listener { response ->
-                // récupération de la liste des entrées, plats et desserts
-                val entries = response.getJSONArray("entries")
-                val mainCourses = response.getJSONArray("mainCourses")
-                val desserts = response.getJSONArray("desserts")
-                // boucle pour parcourir les entrées
-                for (i in 0 until entries.length()) {
-                    val entry = entries.getJSONObject(i)
-                    val entryName = entry.getString("name")
-                    // faire quelque chose avec entryName
-                }
-                // boucle pour parcourir les plats
-                for (i in 0 until mainCourses.length()) {
-                    val mainCourse = mainCourses.getJSONObject(i)
-                    val mainCourseName = mainCourse.getString("name")
-                    // faire quelque chose avec mainCourseName
-                }
-                // boucle pour parcourir les desserts
-                for (i in 0 until desserts.length()) {
-                    val dessert = desserts.getJSONObject(i)
-                    val dessertName = dessert.getString("name")
-                    // faire quelque chose avec dessertName
-                }
-            },
-            Response.ErrorListener { error ->
-                // code pour traiter les erreurs ici
-            })
-        queue.add(jsonRequest)
-
+            Request.Method.POST, url, jsonObject, {
+                Log.w("CategoryActivity", "response : $it")
+            }, {
+                Log.w("CategoryActivity", "erreur : $it")
+            }
+        )
+        //queue.add(jsonRequest)
+        Volley.newRequestQueue(this).add(jsonRequest)
     }
 }
