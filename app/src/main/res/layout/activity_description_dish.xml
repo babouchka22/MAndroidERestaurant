@@ -8,22 +8,84 @@
 
     <TextView
         android:id="@+id/dishname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="334dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="116dp"
+        android:background="#FFFEFE"
         android:text="nom "
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        android:textColor="#00BCD4"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/TotalPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/dishPicture"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/dishIngredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ingredient"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/TotalPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dishname" />
+        app:layout_constraintTop_toBottomOf="@+id/dishname"
+        app:layout_constraintVertical_bias="0.079" />
+
+    <ImageView
+        android:id="@+id/dishPicture"
+        android:layout_width="410dp"
+        android:layout_height="131dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/TotalPrice"
+        android:layout_width="246dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="104dp"
+        android:text="Total"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/boutonMoins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="108dp"
+        android:text="-"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/TotalPrice"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/boutonPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="108dp"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@+id/TotalPrice"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/dishQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="124dp"
+        android:text="Quantité"
+        app:layout_constraintBottom_toTopOf="@+id/TotalPrice"
+        app:layout_constraintEnd_toStartOf="@+id/boutonPlus"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toEndOf="@+id/boutonMoins" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
