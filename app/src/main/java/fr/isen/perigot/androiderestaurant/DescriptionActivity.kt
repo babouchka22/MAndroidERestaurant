@@ -13,10 +13,11 @@ class DescriptionActivity : AppCompatActivity() {
     private lateinit var food: String
     private lateinit var item: Items
     private lateinit var binding: ActivityDescriptionDishBinding
-
+    private var itemCount = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
 
         setContentView(R.layout.activity_description_dish)
@@ -52,11 +53,11 @@ class DescriptionActivity : AppCompatActivity() {
 
         binding.TotalPrice.text = item.prices.joinToString("\n") { "Total " + it.price + "€" }
 
-        /*
+
         binding.boutonMoins.setOnClickListener{
-            if ( dishQuantity == 1)
+            if ( itemCount == 1)
             {
-                dishQuantity = 1
+                itemCount = 1
             }
             else {
                 itemCount -= 1
@@ -68,7 +69,7 @@ class DescriptionActivity : AppCompatActivity() {
             itemCount += 1
 
         }
-        */
+
 
     }
 
