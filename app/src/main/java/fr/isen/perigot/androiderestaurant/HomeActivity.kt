@@ -21,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this,"Click Entree", Toast.LENGTH_SHORT).show();
 
             val intent = Intent(this@HomeActivity, CategoryActivity::class.java)
-            intent.putExtra("categoryName", "Entrees")
+            intent.putExtra("categoryName", "Entrées")
             startActivity(intent);
         }
 

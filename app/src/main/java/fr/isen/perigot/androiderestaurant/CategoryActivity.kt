@@ -5,55 +5,38 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import fr.isen.perigot.androiderestaurant.databinding.ActivityDetailCategorieBinding
-import fr.isen.perigot.androiderestaurant.databinding.ActivityHomeBinding
 import org.json.JSONObject
+import com.google.gson.Gson
+import fr.isen.perigot.androiderestaurant.modele.DataResult
+import fr.isen.perigot.androiderestaurant.modele.Items
 
 
 class CategoryActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
-
+    private lateinit var category: String
     private lateinit var binding: ActivityDetailCategorieBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_categorie)
 
-        val categoryName = intent.getStringExtra("categoryName")
-        this.title = categoryName
+        category = intent.getStringExtra("categoryName") ?: ""
+        this.title = category
 
         binding = ActivityDetailCategorieBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //val categoryName = intent.getStringExtra("category_name")
-       // val dishTitles = resources.getStringArray(R.array.dish_entrees)
-        //val dishes = dishTitles.filter { it.contains(categoryName) }
-
-       // val adapter = DishAdapter(dishTitles.toList())
-
-        val dishes =findViewById<View>(R.id.recyclerView) as RecyclerView
+        binding.categoryList.layoutManager = LinearLayoutManager(this)
 
 
-
-        dishes.layoutManager = LinearLayoutManager(this)
-
-
-
-
-
-        val dishTitles = when (categoryName) {
-            "Entrees" -> resources.getStringArray(R.array.dish_entrees).toList()
+        val dishTitles = when (category) {
+            "Entrées" -> resources.getStringArray(R.array.dish_entrees).toList()
             "Plats" -> resources.getStringArray(R.array.dish_plats).toList()
             "Desserts" -> resources.getStringArray(R.array.dish_desserts).toList()
             else -> arrayListOf("")
@@ -61,18 +44,16 @@ class CategoryActivity : AppCompatActivity() {
 
         //dishes.adapter = DishAdapter(dishTitles.toList())
 
-        dishes.adapter = DishAdapter(dishTitles) {
-            val intent = Intent(this@CategoryActivity, CategoryActivity::class.java)
-            intent.putExtra("categoryName", it)
-            startActivity(intent);
+        binding.categoryList.adapter = DishAdapter(arrayListOf()) {
+            val intent = Intent(this@CategoryActivity, DescriptionActivity::class.java)
+            intent.putExtra("dish", it)
+            startActivity(intent)
         }
 
-
         loadDishesFromAPI()
-
     }
 
-    private fun loadDishesFromAPI(){
+    private fun loadDishesFromAPI() {
         //val queue = Volley.newRequestQueue(this)
         val url = "http://test.api.catering.bluecodegames.com/menu"
         val jsonObject = JSONObject()
@@ -80,11 +61,23 @@ class CategoryActivity : AppCompatActivity() {
         val jsonRequest = JsonObjectRequest(
             Request.Method.POST, url, jsonObject, {
                 Log.w("CategoryActivity", "response : $it")
-            }, {
-                Log.w("CategoryActivity", "erreur : $it")
-            }
-        )
-        //queue.add(jsonRequest)
+                handleAPIData(it.toString())
+            },
+            {
+                Log.e("CategoryActivity", "erreur : $it")
+            })
         Volley.newRequestQueue(this).add(jsonRequest)
     }
+
+    private fun handleAPIData(data: String) {
+        val gson = Gson()
+        var dishesResult = gson.fromJson(data, DataResult::class.java)
+        val dishCategory = dishesResult.data.firstOrNull { it.nameFr == category }
+
+        val adapter = binding.categoryList.adapter as DishAdapter
+        adapter.refreshList(dishCategory?.items as ArrayList<Items>)
+    }
+
+
+
 }
