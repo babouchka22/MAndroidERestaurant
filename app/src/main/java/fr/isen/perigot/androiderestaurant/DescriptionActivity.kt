@@ -30,6 +30,7 @@ class DescriptionActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.title = food
 
+       // binding.dishname.text = dish.nameFr
        // binding.dishname.text = dishes[position].nameFr
        // binding.dishIngredient.text = dishes[position].ingredients[0].nameFr
 
