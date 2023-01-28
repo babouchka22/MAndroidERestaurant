@@ -1,11 +1,13 @@
 package fr.isen.perigot.androiderestaurant
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
+import android.view.View
+import android.widget.*
 //import android.widget.Toolbar
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +22,10 @@ class DescriptionActivity : AppCompatActivity() {
     private lateinit var item: Items
     private lateinit var binding: ActivityDescriptionDishBinding
     private var dishQuantity = 1
+
+    private lateinit var cartBadge: TextView
+    private lateinit var cartBadgeContainer: FrameLayout
+    private var cartItemCount: Int = 0
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,18 +49,6 @@ class DescriptionActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.title = food
 
-/*
-        val imageView = ImageView(this)
-        Glide.with(this)
-            .load(R.drawable.basket)
-            .override(48, 48)
-            .into(imageView)
-        supportActionBar?.setHomeAsUpIndicator(imageView.drawable)
-*/
-//afficher l'image chariot dans la toolbar
-/*
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.basket)*/
 
         binding.dishname.text = item.nameFr
 
@@ -104,22 +98,74 @@ class DescriptionActivity : AppCompatActivity() {
             // Add to basket
             this.cacheDir.absolutePath
             val basket = Basket.getBasket(this)
+            basket.addItem(item, dishQuantity)
+            basket.save(this)
             Snackbar.make(binding.root, "Bien ajouté au panier", Snackbar.LENGTH_SHORT).show()
+            invalidateOptionsMenu()
         }
 
-/*
-        val toolbar = findViewById<Toolbar>(R.id.action_settings)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.chariot)
-        toolbar.inflateMenu(R.menu.main_menu)//main_menu
-*/
+
+
+       // cartBadge = findViewById(R.id.cart_badge)
+      // cartBadgeContainer = findViewById(R.id.cart_badge_container)
+
+/*//saute des que on rentre dans la description
+        val cartBadge = findViewById<TextView>(R.id.cart_badge)
+        cartBadge.text = "3"*/
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.mon_menu,menu)
+
+
+
+        val menuItem = menu?.findItem(R.id.menu_item_image)
+        val actionView = menuItem?.getActionView()
+
+
+        if (actionView != null) {
+            actionView.setOnClickListener {
+                Toast.makeText(this,"Click Chariot", Toast.LENGTH_SHORT).show();
+
+                val intent = Intent(this@DescriptionActivity, BasketActivity::class.java)
+                startActivity(intent);
+            }
+        }
+
+
         return true
+
+
+        /*
+        val menuItem = menu?.findItem(R.id.menu_item_image)
+        val image = resources.getDrawable(R.drawable.chariot)
+        if (menuItem != null) {
+            menuItem.icon = image
+        }*/
+
+
+/*
+        menuInflater.inflate(R.menu.mon_menu,menu)
+        val badge = findViewById<TextView>(R.id.cart_badge)
+        badge.text = "2"
+        badge.visibility = View.VISIBLE
+        return true*/
+
+
+/*
+        menuInflater.inflate(R.menu.mon_menu, menu)
+        val cartItem = menu?.findItem(R.id.menu_item_image)
+        val cartActionView = cartItem?.actionView
+        cartBadgeContainer = cartActionView?.findViewById(R.id.cart_badge_container)!!
+        cartBadge = cartBadgeContainer?.findViewById(R.id.cart_badge)!!
+        updateCartBadge()
+        return true*/
+
     }
+
+    /*
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
@@ -128,7 +174,7 @@ class DescriptionActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
+    }*/
 /*
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         super.onOptionsItemSelected(item)
@@ -159,4 +205,17 @@ class DescriptionActivity : AppCompatActivity() {
         return true
     }
 */
+
+//met a jour la pastille
+    private fun updateCartBadge() {
+        if (cartItemCount == 0) {
+            cartBadge.visibility = View.GONE
+        } else {
+            cartBadge.visibility = View.VISIBLE
+            cartBadge.text = cartItemCount.toString()
+        }
+    }
+
+
+
 }

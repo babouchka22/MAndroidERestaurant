@@ -89,16 +89,6 @@
         app:layout_constraintStart_toEndOf="@+id/boutonMoins" />
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/action_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/app_name"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
