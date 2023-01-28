@@ -14,7 +14,6 @@ class BasketAdapter(private val items: List<BasketItem>,
     val deleteDishClickListener: (BasketItem) -> Unit)
     : RecyclerView.Adapter<BasketAdapter.BasketViewHolder>()  {
 
-
     class BasketViewHolder(binding: CelluleBasketBinding) : RecyclerView.ViewHolder(binding.root) {
         val dishName: TextView = binding.dishname
         val dishPrice: TextView = binding.unityprice

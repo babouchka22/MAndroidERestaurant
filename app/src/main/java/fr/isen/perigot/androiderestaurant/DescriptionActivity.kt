@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.*
 //import android.widget.Toolbar
 import androidx.appcompat.widget.Toolbar
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import fr.isen.perigot.androiderestaurant.databinding.ActivityDescriptionDishBinding
@@ -104,7 +105,10 @@ class DescriptionActivity : AppCompatActivity() {
             invalidateOptionsMenu()
         }
 
-
+        val dishes = mutableListOf<Items>()
+        val viewPager: ViewPager = findViewById(R.id.viewPager)
+        val adapter = ViewPagerAdapter(dishes)
+        viewPager.adapter = adapter
 
        // cartBadge = findViewById(R.id.cart_badge)
       // cartBadgeContainer = findViewById(R.id.cart_badge_container)

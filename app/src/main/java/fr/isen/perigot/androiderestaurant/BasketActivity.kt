@@ -10,6 +10,7 @@ import fr.isen.perigot.androiderestaurant.modele.Items
 class BasketActivity : AppCompatActivity() {
     private lateinit var binding : ActivityBasketBinding
    // private lateinit var item: BasketItem
+   private lateinit var food: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -18,6 +19,9 @@ class BasketActivity : AppCompatActivity() {
         setContentView(binding.root)
         //setContentView(R.layout.activity_basket)
 
+
+        val actionBar = supportActionBar
+        actionBar?.title = "Votre Panier"
 
         loadList()
 

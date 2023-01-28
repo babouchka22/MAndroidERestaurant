@@ -28,7 +28,7 @@ class DishAdapter(private var dishes: List<Items>, val onItemClickListener: (Ite
 
     override fun onBindViewHolder(holder: DishAdapter.DishViewHolder, position: Int) {
 
-        holder.sellPrice.text = dishes[position].prices[0].price
+        holder.sellPrice.text = "Prix "+dishes[position].prices[0].price+"€"
         holder.dishTitle.text = dishes[position].nameFr
         holder.itemView.setOnClickListener {
             onItemClickListener(dishes[position])
