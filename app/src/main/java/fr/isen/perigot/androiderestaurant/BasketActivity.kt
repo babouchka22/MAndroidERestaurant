@@ -11,6 +11,7 @@ class BasketActivity : AppCompatActivity() {
     private lateinit var binding : ActivityBasketBinding
    // private lateinit var item: BasketItem
    private lateinit var food: String
+    private lateinit var basket: Basket
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,6 +33,8 @@ class BasketActivity : AppCompatActivity() {
 
        // binding.totalPrice.text = String.format("Total %.2f €", (item.dish.prices[0].price?.toDouble() ?: 0.0) * item.quantity)
 
+        //tentative pour faire le total du panier
+        //val total = basket.total
     }
 
 

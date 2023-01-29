@@ -24,18 +24,16 @@ class DescriptionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDescriptionDishBinding
     private var dishQuantity = 1
 
-    private lateinit var cartBadge: TextView
-    private lateinit var cartBadgeContainer: FrameLayout
+    //private lateinit var cartBadge: TextView
     private var cartItemCount: Int = 0
+
+    private lateinit var viewPager: ViewPager
+    private lateinit var mViewPagerAdapter: ViewPagerAdapter
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //binding = DataBindingUtil.setContentView(this, R.layout.activity_description_dish)
-        //binding.dishQuantity = dishQuantity
-
-        //binding.dishQuantity = dishQuantity
 
         setContentView(R.layout.activity_description_dish)
         item = intent.getSerializableExtra("dish") as Items
@@ -72,8 +70,6 @@ class DescriptionActivity : AppCompatActivity() {
         binding.TotalPrice.text = item.prices.joinToString("\n") { "Total " + it.price + "€" }
 
 
-        val boutonMoins = findViewById<Button>(R.id.boutonMoins)
-
         binding.boutonMoins.setOnClickListener{
             if ( dishQuantity == 1)
             {
@@ -83,6 +79,7 @@ class DescriptionActivity : AppCompatActivity() {
                 dishQuantity -= 1
                 binding.dishQuantity.text = dishQuantity.toString()
                 binding.TotalPrice.text = String.format("Total %.2f €", (item.prices[0].price?.toDouble() ?: 0.0) * dishQuantity)
+                updateCartBadge()
             }
 
         }
@@ -91,12 +88,12 @@ class DescriptionActivity : AppCompatActivity() {
             dishQuantity += 1
             binding.dishQuantity.text = dishQuantity.toString()
             binding.TotalPrice.text = String.format("Total %.2f €", (item.prices[0].price?.toDouble() ?: 0.0) * dishQuantity)
-
+            updateCartBadge()
         }
 
 
         binding.TotalPrice.setOnClickListener {
-            // Add to basket
+            // Ajouter au panier
             this.cacheDir.absolutePath
             val basket = Basket.getBasket(this)
             basket.addItem(item, dishQuantity)
@@ -104,26 +101,53 @@ class DescriptionActivity : AppCompatActivity() {
             Snackbar.make(binding.root, "Bien ajouté au panier", Snackbar.LENGTH_SHORT).show()
             invalidateOptionsMenu()
         }
+/*
+        //test pour carrousel
+        //var dishes = List<Items>()
+        viewPager = findViewById(R.id.viewPager)
+        //mViewPagerAdapter = ViewPagerAdapter(dishes)
+        viewPager.pageMargin = 15
+        viewPager.setPadding(50, 0, 50, 0);
+        viewPager.setClipToPadding(false)
+        viewPager.setPageMargin(25)
+        viewPager.adapter = mViewPagerAdapter
+        viewPager.addOnPageChangeListener(viewPagerPageChangeListener)*/
 
-        val dishes = mutableListOf<Items>()
+        //binding.viewPager.adapter = DishPictureAdapter(this, item.images)
+/*
+        //val dishes = mutableListOf<Items>()
         val viewPager: ViewPager = findViewById(R.id.viewPager)
-        val adapter = ViewPagerAdapter(dishes)
-        viewPager.adapter = adapter
+        val adapter = ViewPagerAdapter(item.images.)
+        viewPager.adapter = adapter*/
 
-       // cartBadge = findViewById(R.id.cart_badge)
-      // cartBadgeContainer = findViewById(R.id.cart_badge_container)
-
-/*//saute des que on rentre dans la description
-        val cartBadge = findViewById<TextView>(R.id.cart_badge)
-        cartBadge.text = "3"*/
-
+        // ces deux lignes fond sauter la page pour accéder à la description des plats
+        //val cartBadge: TextView = findViewById(R.id.cart_badge)
+        //cartBadge.text = cartItemCount.toString()
     }
+
+    var viewPagerPageChangeListener: ViewPager.OnPageChangeListener =
+        object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+                // your logic here
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                // your logic here
+            }
+
+            override fun onPageSelected(position: Int) {
+                // your logic here
+            }
+        }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.mon_menu,menu)
-
-
 
         val menuItem = menu?.findItem(R.id.menu_item_image)
         val actionView = menuItem?.getActionView()
@@ -140,15 +164,6 @@ class DescriptionActivity : AppCompatActivity() {
 
 
         return true
-
-
-        /*
-        val menuItem = menu?.findItem(R.id.menu_item_image)
-        val image = resources.getDrawable(R.drawable.chariot)
-        if (menuItem != null) {
-            menuItem.icon = image
-        }*/
-
 
 /*
         menuInflater.inflate(R.menu.mon_menu,menu)
@@ -209,7 +224,7 @@ class DescriptionActivity : AppCompatActivity() {
         return true
     }
 */
-
+/*
 //met a jour la pastille
     private fun updateCartBadge() {
         if (cartItemCount == 0) {
@@ -218,8 +233,26 @@ class DescriptionActivity : AppCompatActivity() {
             cartBadge.visibility = View.VISIBLE
             cartBadge.text = cartItemCount.toString()
         }
+    }*/
+
+    //Fonction pour mettre à jour la valeur de la TextView
+    private fun updateCartBadge() {
+        val cartBadge: TextView = findViewById(R.id.cart_badge)
+        cartBadge.text = cartItemCount.toString()
     }
 
+    //Fonction pour ajouter un article au panier
+    fun addToCart() {
+        cartItemCount++
+        updateCartBadge()
+    }
 
+    //Fonction pour supprimer un article du panier
+    fun removeFromCart() {
+        if (cartItemCount > 0) {
+            cartItemCount--
+            updateCartBadge()
+        }
+    }
 
 }

@@ -57,6 +57,17 @@ class Basket(val items: MutableList<BasketItem>): Serializable {
         items.remove(basketItem)
     }
 
+/* tentative pour faire le total du panier
+    val total:Double
+        get() {
+            var total = 0.0
+            items.forEach {
+                total += it.dish.prices[0].price?.toDouble() ?: 0.0 * it.quantity
+
+            }
+            return total
+        }*/
+
     companion object {
         fun getBasket(context: Context): Basket {
             val jsonFile = File(context.cacheDir.absolutePath + BASKET_FILE)
