@@ -24,9 +24,7 @@ class BasketAdapter(private val items: List<BasketItem>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketViewHolder {
         return BasketViewHolder(CelluleBasketBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-        /*
-     val view = LayoutInflater.from(parent.context).inflate(R.layout.dish_item, parent, false)
-     return BasketAdapter.BasketViewHolder(view)*/
+
     }
 
 

@@ -55,6 +55,7 @@ class Basket(val items: MutableList<BasketItem>): Serializable {
 
     fun removeDish(basketItem: BasketItem) {
         items.remove(basketItem)
+
     }
 
 /* tentative pour faire le total du panier

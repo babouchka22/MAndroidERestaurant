@@ -1,18 +1,14 @@
 package fr.isen.perigot.androiderestaurant
 
+//import android.widget.Toolbar
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.*
-//import android.widget.Toolbar
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import fr.isen.perigot.androiderestaurant.databinding.ActivityDescriptionDishBinding
 import fr.isen.perigot.androiderestaurant.modele.Items
 
@@ -23,12 +19,14 @@ class DescriptionActivity : AppCompatActivity() {
     private lateinit var item: Items
     private lateinit var binding: ActivityDescriptionDishBinding
     private var dishQuantity = 1
-
+    private var quantityEnregistre = 0
     //private lateinit var cartBadge: TextView
     private var cartItemCount: Int = 0
 
     private lateinit var viewPager: ViewPager
     private lateinit var mViewPagerAdapter: ViewPagerAdapter
+    private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
+    private val SHARED_PREF_USER_INFO_NAME = "SHARED_PREF_USER_INFO_NAME"
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +35,6 @@ class DescriptionActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_description_dish)
         item = intent.getSerializableExtra("dish") as Items
-        food = intent.getStringExtra("dish") ?: ""
 
         binding = ActivityDescriptionDishBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -57,6 +54,14 @@ class DescriptionActivity : AppCompatActivity() {
             ingredientString.append(ingredient.nameFr)
             ingredientString.append("\n")
         }
+
+        // lecture de la quantité
+        quantityEnregistre = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getInt(
+            SHARED_PREF_USER_INFO_NAME,
+            0
+        )
+
+
         binding.dishIngredient.text = ingredientString
 
 
@@ -72,7 +77,7 @@ class DescriptionActivity : AppCompatActivity() {
                 dishQuantity -= 1
                 binding.dishQuantity.text = dishQuantity.toString()
                 binding.TotalPrice.text = String.format("Total %.2f €", (item.prices[0].price?.toDouble() ?: 0.0) * dishQuantity)
-                updateCartBadge()
+               // updateCartBadge()
             }
 
         }
@@ -81,7 +86,7 @@ class DescriptionActivity : AppCompatActivity() {
             dishQuantity += 1
             binding.dishQuantity.text = dishQuantity.toString()
             binding.TotalPrice.text = String.format("Total %.2f €", (item.prices[0].price?.toDouble() ?: 0.0) * dishQuantity)
-            updateCartBadge()
+            //updateCartBadge()
         }
 
 
@@ -92,11 +97,18 @@ class DescriptionActivity : AppCompatActivity() {
             basket.addItem(item, dishQuantity)
             basket.save(this)
             Snackbar.make(binding.root, "Bien ajouté au panier", Snackbar.LENGTH_SHORT).show()
+
+            // ecriture de la pastille
+            val nbEnregistre = quantityEnregistre + 1
+            getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
+                .edit()
+                .putInt(SHARED_PREF_USER_INFO_NAME, nbEnregistre)
+                .apply();
+
             invalidateOptionsMenu()
         }
 
         //Code pour le carrousel
-
         viewPager = findViewById(R.id.viewPager)
         mViewPagerAdapter = ViewPagerAdapter(this, item.images)
         viewPager.pageMargin = 15
@@ -105,32 +117,31 @@ class DescriptionActivity : AppCompatActivity() {
         viewPager.setPageMargin(25)
         viewPager.adapter = mViewPagerAdapter
 
-
-
-        // ces deux lignes fond sauter la page pour accéder à la description des plats
-        //val cartBadge: TextView = findViewById(R.id.cart_badge)
-        //cartBadge.text = cartItemCount.toString()
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.mon_menu,menu)
-
-        val menuItem = menu?.findItem(R.id.menu_item_image)
-        val actionView = menuItem?.getActionView()
+        menuInflater.inflate(R.menu.mon_menu, menu)
 
 
-        if (actionView != null) {
-            actionView.setOnClickListener {
-                Toast.makeText(this,"Click Chariot", Toast.LENGTH_SHORT).show();
+        val menuItem = menu?.findItem(R.id.menu_item_image)?.actionView
 
-                val intent = Intent(this@DescriptionActivity, BasketActivity::class.java)
-                startActivity(intent);
-            }
+        // lecture de la quantité
+        val quantityPreference = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getInt(
+            SHARED_PREF_USER_INFO_NAME,
+            0
+        )
+        // mettre à jour la pastille
+        val cartBadge: TextView? = menuItem?.findViewById(R.id.cart_badge)
+        cartBadge?.text = quantityPreference.toString()
+
+
+        menuItem?.setOnClickListener {
+            Toast.makeText(this, "Click Chariot", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@DescriptionActivity, BasketActivity::class.java)
+            startActivity(intent);
         }
-
 
         return true
 
@@ -204,24 +215,6 @@ class DescriptionActivity : AppCompatActivity() {
         }
     }*/
 
-    //Fonction pour mettre à jour la valeur de la TextView
-    private fun updateCartBadge() {
-        val cartBadge: TextView = findViewById(R.id.cart_badge)
-        cartBadge.text = cartItemCount.toString()
-    }
 
-    //Fonction pour ajouter un article au panier
-    fun addToCart() {
-        cartItemCount++
-        updateCartBadge()
-    }
-
-    //Fonction pour supprimer un article du panier
-    fun removeFromCart() {
-        if (cartItemCount > 0) {
-            cartItemCount--
-            updateCartBadge()
-        }
-    }
 
 }
