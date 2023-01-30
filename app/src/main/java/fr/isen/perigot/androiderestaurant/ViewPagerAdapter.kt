@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import fr.isen.perigot.androiderestaurant.modele.Items
 
 //private var dishes: List<Items>
-class ViewPagerAdapter(private var mContext: Context, private var dishes: List<Items>) : PagerAdapter() {
+class ViewPagerAdapter(private var mContext: Context, private var dishe: List<String>) : PagerAdapter() {
     private var layoutInflater: LayoutInflater? = null
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -24,10 +24,12 @@ class ViewPagerAdapter(private var mContext: Context, private var dishes: List<I
         //val view = layoutInflater!!.inflate(R.layout.cellule_viewpager, container, false)
        // var imageview: TextView = view.findViewById(R.id.slide_screen_item_iv)
 
-        if (dishes[position].images[0].isNotEmpty()) {
+        if (dishe[position].isNotEmpty()) {
             Picasso.get()
-                .load(dishes[position].images[0])
+                .load(dishe[position])
                 .placeholder(R.drawable.salade_lyonnaise)
+                .centerCrop()
+                .fit()
                 .into(dishImage)
         }
 
@@ -36,7 +38,7 @@ class ViewPagerAdapter(private var mContext: Context, private var dishes: List<I
     }
 
     override fun getCount(): Int {
-        return dishes.size
+        return dishe.size
     }
 
     override fun isViewFromObject(view: View, obj: Any): Boolean {

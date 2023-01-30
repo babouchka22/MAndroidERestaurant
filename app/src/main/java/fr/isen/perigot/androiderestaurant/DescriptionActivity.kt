@@ -60,13 +60,6 @@ class DescriptionActivity : AppCompatActivity() {
         binding.dishIngredient.text = ingredientString
 
 
-        if (item.images[0].isNotEmpty()) {
-            Picasso.get()
-                .load(item.images[0])
-                .placeholder(R.drawable.salade_lyonnaise)
-                .into(binding.dishPicture)
-        }
-
         binding.TotalPrice.text = item.prices.joinToString("\n") { "Total " + it.price + "€" }
 
 
@@ -101,48 +94,24 @@ class DescriptionActivity : AppCompatActivity() {
             Snackbar.make(binding.root, "Bien ajouté au panier", Snackbar.LENGTH_SHORT).show()
             invalidateOptionsMenu()
         }
-/*
-        //test pour carrousel
-        //var dishes = List<Items>()
+
+        //Code pour le carrousel
+
         viewPager = findViewById(R.id.viewPager)
-        //mViewPagerAdapter = ViewPagerAdapter(dishes)
+        mViewPagerAdapter = ViewPagerAdapter(this, item.images)
         viewPager.pageMargin = 15
         viewPager.setPadding(50, 0, 50, 0);
         viewPager.setClipToPadding(false)
         viewPager.setPageMargin(25)
         viewPager.adapter = mViewPagerAdapter
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener)*/
 
-        //binding.viewPager.adapter = DishPictureAdapter(this, item.images)
-/*
-        //val dishes = mutableListOf<Items>()
-        val viewPager: ViewPager = findViewById(R.id.viewPager)
-        val adapter = ViewPagerAdapter(item.images.)
-        viewPager.adapter = adapter*/
+
 
         // ces deux lignes fond sauter la page pour accéder à la description des plats
         //val cartBadge: TextView = findViewById(R.id.cart_badge)
         //cartBadge.text = cartItemCount.toString()
     }
 
-    var viewPagerPageChangeListener: ViewPager.OnPageChangeListener =
-        object : ViewPager.OnPageChangeListener{
-            override fun onPageScrollStateChanged(state: Int) {
-                // your logic here
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                // your logic here
-            }
-
-            override fun onPageSelected(position: Int) {
-                // your logic here
-            }
-        }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
